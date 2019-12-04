@@ -1,10 +1,6 @@
 package com.example.se_team5.item;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.se_team5.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
+public class RecommendItemsAdapter extends RecyclerView.Adapter<RecommendItemsAdapter.ViewHolder>{
     private ArrayList<Item> myDataList;
-    private SparseBooleanArray mSelectedItems = new SparseBooleanArray(0);
+    private SparseBooleanArray mSelectedItems1 = new SparseBooleanArray(0);
+    private SparseBooleanArray mSelectedItems2 = new SparseBooleanArray(0);
 
 
     public interface OnListItemLongSelectedInterface {
@@ -52,11 +48,22 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
                 public void onClick(View v) {
                     int position = getAdapterPosition();
 
-                    if (mSelectedItems.get(position, false) == false) {
-                        mSelectedItems.put(position, true);
+                    if (mSelectedItems1.get(position, false) == false && mSelectedItems2.get(position, false) == false) {
+                        mSelectedItems1.put(position, true);
                         v.setBackgroundColor(Color.YELLOW);
-                    } else {
-                        mSelectedItems.delete(position);
+                        //notifyItemChanged(position);
+                    }else if (mSelectedItems1.get(position, false) == true && mSelectedItems2.get(position, false) == false) {
+                        mSelectedItems1.delete(position);
+                        mSelectedItems2.put(position, true);
+                        v.setBackgroundColor(Color.CYAN);
+                        //notifyItemChanged(position);
+                    } else if(mSelectedItems2.get(position, false) == true && mSelectedItems1.get(position, false) == false) {
+                        mSelectedItems2.delete(position);
+                        v.setBackgroundColor(Color.WHITE);
+                       // notifyItemChanged(position);
+                    }else{
+                        mSelectedItems1.delete(position);
+                        mSelectedItems2.delete(position);
                         v.setBackgroundColor(Color.WHITE);
                     }
                 }
@@ -73,7 +80,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         }
     }
 
-    public ItemsAdapter(ArrayList<Item> dataList)
+    public RecommendItemsAdapter(ArrayList<Item> dataList)
     {
         myDataList = dataList;
         setHasStableIds(true);
@@ -106,7 +113,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         return position;
     }
 
-    public SparseBooleanArray getmSelectedItems(){
-        return mSelectedItems;
+    public SparseBooleanArray getmSelectedItems1(){
+        return mSelectedItems1;
+    }
+
+    public SparseBooleanArray getmSelectedItems2(){
+        return mSelectedItems2;
     }
 }

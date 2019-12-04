@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_refrigerator"
         android:name="com.example.se_team5.ui.refrigerator.RefrigeratorFragment"
-        android:label="@string/title_refigerator"
+        android:label="@string/title_refrigerator"
         tools:layout="@layout/fragment_refrigerator" />
 
     <fragment

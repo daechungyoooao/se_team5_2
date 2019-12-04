@@ -17,20 +17,10 @@ import static androidx.lifecycle.ViewModelProviders.*;
 
 public class BasketFragment extends Fragment {
 
-    private BasketViewModel basketViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        basketViewModel =
-                of(this).get(BasketViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_basket, container, false);
-        final TextView textView = root.findViewById(R.id.text_basket);
-        basketViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_refrigerator, container, false);
+
         return root;
     }
 }

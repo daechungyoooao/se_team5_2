@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,6 +20,10 @@ import com.example.se_team5.item.Item;
 import com.example.se_team5.item.ItemsAdapter;
 import com.example.se_team5.ui.refrigerator.RefrigeratorFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.DataOutputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -26,8 +32,6 @@ import java.util.ArrayList;
 
 public class PutActivity extends AppCompatActivity {
 
-    private static ArrayList<Item> ITEM_LIST = new ArrayList<Item>();
-    private static ArrayList<Item> SELECTED_ITEMS = new ArrayList<Item>();
     private RecyclerView recyclerView;
     private ItemsAdapter myAdapter;
 
@@ -53,9 +57,25 @@ public class PutActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);  // Adapter 등록
 
 
+
         PutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                JSONObject postData = new JSONObject();
+                try {
+                    postData.put("username", "hj323");
+
+                    SparseBooleanArray a = myAdapter.getmSelectedItems();
+                    JSONArray temp = new JSONArray();
+                    for(int i = 0; i < new AllItems().getItemNum(); i++){
+                        if(a.get(i, false))
+                            temp.put(i);
+                    }
+                    postData.put("items", temp);
+                    Log.d("ddddd", String.valueOf(temp));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 //new putItemInRefrigerator(PutActivity.this).execute("/user/refrigerator", "{\"username\":\"hj323\",\"items\":[1,2]}");
             }
         });

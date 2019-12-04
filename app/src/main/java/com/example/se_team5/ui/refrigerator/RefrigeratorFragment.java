@@ -36,8 +36,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 
-public class RefrigeratorFragment extends Fragment implements ItemsAdapter.OnListItemLongSelectedInterface
-        , ItemsAdapter.OnListItemSelectedInterface{
+public class RefrigeratorFragment extends Fragment{
 
     private static ArrayList<Item> ITEM_LIST = new ArrayList<Item>();
     private static ArrayList<Item> SELECTED_ITEMS = new ArrayList<Item>();
@@ -56,17 +55,15 @@ public class RefrigeratorFragment extends Fragment implements ItemsAdapter.OnLis
         SharedPreferences user = this.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
 
         user_id = user.getString("user","");
-
-        Log.i("user", user_id);
-
-        new getRefrigeratorItemList(RefrigeratorFragment.this).execute("/user/refrigerator", "?user_id=hj323");
+        Log.d("user", user_id);
 
         recyclerView = root.findViewById(R.id.removeRecyclerView);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 5);
         recyclerView.setLayoutManager(manager); // LayoutManager 등록
 
-        myAdapter = new ItemsAdapter(ITEM_LIST);//new AllItems().getAllItem()
-        recyclerView.setAdapter(myAdapter);  // Adapter 등록
+        new getRefrigeratorItemList(RefrigeratorFragment.this).execute("/user/refrigerator", "?user_id=hj323");
+        //myAdapter = new ItemsAdapter(ITEM_LIST);//new AllItems().getAllItem()
+        //recyclerView.setAdapter(myAdapter);  // Adapter 등록
 
         //put
         putButton.setOnClickListener(new View.OnClickListener(){
@@ -121,7 +118,7 @@ public class RefrigeratorFragment extends Fragment implements ItemsAdapter.OnLis
         return root;
     }
 
-    private static class getRefrigeratorItemList extends AsyncTask<String, Void, String> {
+    private class getRefrigeratorItemList extends AsyncTask<String, Void, String> {
 
         private WeakReference<RefrigeratorFragment> activityReference;
         // only retain a weak reference to the activity
@@ -149,6 +146,8 @@ public class RefrigeratorFragment extends Fragment implements ItemsAdapter.OnLis
             }
             //Toast.makeText(response.substring(3),Toast.LENGTH_SHORT).show();
             ITEM_LIST = jsonParsing(response.substring(3));
+            myAdapter = new ItemsAdapter(ITEM_LIST);//new AllItems().getAllItem()
+            recyclerView.setAdapter(myAdapter);  // Adapter 등록
         }
     }
 
@@ -240,14 +239,5 @@ public class RefrigeratorFragment extends Fragment implements ItemsAdapter.OnLis
                 //
             }
         }
-    }
-    @Override
-    public void onItemSelected(View v, int position) {
-        ItemsAdapter.ViewHolder viewHolder = (ItemsAdapter.ViewHolder)recyclerView.findViewHolderForAdapterPosition(position);
-    }
-
-    @Override
-    public void onItemLongSelected(View v, int position) {
-
     }
 }

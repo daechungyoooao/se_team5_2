@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.se_team5.item.AllItems;
 import com.example.se_team5.item.Item;
 import com.example.se_team5.item.ItemsAdapter;
+import com.example.se_team5.item.RecommendItemsAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -25,7 +32,7 @@ public class RecommendActivity extends AppCompatActivity {
     private static ArrayList<Item> SELECTED_ITEMS1 = new ArrayList<Item>();
     private static ArrayList<Item> SELECTED_ITEMS2 = new ArrayList<Item>();
     private RecyclerView recyclerView;
-    private ItemsAdapter myAdapter;
+    private RecommendItemsAdapter myAdapter;
 
     private String user_id;
 
@@ -40,11 +47,36 @@ public class RecommendActivity extends AppCompatActivity {
         GridLayoutManager manager = new GridLayoutManager(this, 5);
         recyclerView.setLayoutManager(manager); // LayoutManager 등록
 
-        myAdapter = new ItemsAdapter(new AllItems().getAllItem());
+        myAdapter = new RecommendItemsAdapter(new AllItems().getAllItem());
         recyclerView.setAdapter(myAdapter);  // Adapter 등록
         PutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                JSONObject postData = new JSONObject();
+                try {
+                    postData.put("username", "hj323");
+
+                    SparseBooleanArray a = myAdapter.getmSelectedItems1();
+                    JSONArray temp = new JSONArray();
+                    for(int i = 0; i < new AllItems().getItemNum(); i++){
+                        if(a.get(i, false))
+                            temp.put(i);
+                    }
+                    postData.put("good", temp);
+                    Log.d("good", String.valueOf(temp));
+
+                    a = myAdapter.getmSelectedItems2();
+                    temp = new JSONArray();
+                    for(int i = 0; i < new AllItems().getItemNum(); i++){
+                        if(a.get(i, false))
+                            temp.put(i);
+                    }
+                    postData.put("bad", temp);
+
+                    Log.d("bad", String.valueOf(temp));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 new recommendRecipe(RecommendActivity.this).execute("/recipe/refrigerator", "{\"good\":[3,4],\"bad\":[1,2]}");
             }
         });

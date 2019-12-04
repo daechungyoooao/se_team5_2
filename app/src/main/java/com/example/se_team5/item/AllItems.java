@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AllItems {
+
+    private final int itemNum = 8;
     private final ArrayList<Item> AllItem = new ArrayList<Item>(Arrays.asList(
             new Item("계란", "", R.drawable.egg, 0),
             new Item("김", "", R.drawable.gim, 1),
@@ -23,5 +25,9 @@ public class AllItems {
 
     public Item findItem(int id){
         return AllItem.get(id);
+    }
+
+    public int getItemNum(){
+        return itemNum;
     }
 }

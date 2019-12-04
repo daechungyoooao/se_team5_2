@@ -10,6 +10,7 @@ public class Item {
     private String name1;
     private String name2;
     private int id;
+    private String category;
 
     public Item (String name1, String name2, int imageResourceID){
         this.name1 = name1;
