@@ -119,7 +119,7 @@ public class RecommendActivity extends AppCompatActivity {
             if(success == null) return ;
 
             if (success.substring(0,3).equals("200")) {
-                //성공 시, recommend recipe 화면 띄우기
+                activity.finish();
                 //Intent intent = new Intent(activity, MainActivity.class);
                 //activity.startActivity(intent);
             } else {

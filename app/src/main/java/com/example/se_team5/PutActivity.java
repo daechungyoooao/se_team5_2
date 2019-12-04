@@ -56,8 +56,6 @@ public class PutActivity extends AppCompatActivity {
         myAdapter = new ItemsAdapter(new AllItems().getAllItem());
         recyclerView.setAdapter(myAdapter);  // Adapter 등록
 
-
-
         PutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -120,6 +118,7 @@ public class PutActivity extends AppCompatActivity {
             if (response.substring(0,3).equals("200")) {
                 // 성공 시, 메인 화면 띄우기
                 Toast.makeText(activity, "냉장고에 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                activity.finish();
             } else {
                 Toast.makeText(activity, "오류: "+response.substring(0,3), Toast.LENGTH_SHORT).show();
             }

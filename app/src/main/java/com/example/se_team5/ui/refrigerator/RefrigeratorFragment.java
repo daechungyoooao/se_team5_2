@@ -146,8 +146,8 @@ public class RefrigeratorFragment extends Fragment{
             }
             //Toast.makeText(response.substring(3),Toast.LENGTH_SHORT).show();
             ITEM_LIST = jsonParsing(response.substring(3));
-            myAdapter = new ItemsAdapter(ITEM_LIST);//new AllItems().getAllItem()
-            recyclerView.setAdapter(myAdapter);  // Adapter 등록
+            myAdapter = new ItemsAdapter(new AllItems().getAllItem());
+            recyclerView.setAdapter(myAdapter);
         }
     }
 
